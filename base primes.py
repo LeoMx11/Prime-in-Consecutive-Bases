@@ -68,17 +68,75 @@ def show_everything(max_num):
 
     numlist = [0,0,0,0,0,0,0,0,0,0,0]
 
+    numDict = {}
+
+    for val in range(2,11):
+        numDict[val] = []
+
     for num in range(int(max_num) + 1):
 
         if is_prime(num):
 
             print(f"{num} | {bin(num)[2:]} | {find_highest_base(bin(num)[2:])}")
             numlist[find_highest_base(bin(num)[2:])] += 1
+            numDict[find_highest_base(bin(num)[2:])] += [num]
 
     for x in range(2,len(numlist)):
         print(f"\nCount of primes with max base = {x}: {numlist[x]}")
-            
-    
+
+    while True:
+
+        user_input = input("Would you like to see information about a base or a prime number? (Enter 'base' or 'prime', or enter 'q' to quit).\n> ")
+
+        if user_input.lower() == "q":
+            break
+                
+        if user_input.lower() == "base":
+
+            while True:
+                val = input("\nPlease enter the base you would like to observe, and I will print all corresponding primes.\nYou may also enter 'q' to quit\n> ")
+
+                if val == "q":
+                    break
+
+                try: base = int(val)
+                except:
+                    print("Try again.")
+                    continue
+
+                for prime in numDict[base]:
+                    print(prime)
+
+        if user_input.lower() == "prime":
+
+            while True:
+
+                string = input("Please enter a prime number to see which was its maximum base.\nYou may also enter 'q' to quit.\n> ")
+
+                if string == "q":
+                    break
+
+                try: prime = int(string)
+                except:
+                    print("Try again. This is not an integer.")
+                    continue
+
+                if is_prime(prime):
+
+                    print(f"{prime} converted to binary is: {bin(prime)[2:]}")
+
+                    print(f"The highest base for which {bin(prime)[2:]} is prime is: {find_highest_base(bin(prime)[2:])}")
+
+                    for i in range(2, find_highest_base(bin(prime)[2:])+1):
+
+                        print(f"{bin(prime)[2:]} in base {i} = {convert_to_base_ten(i, bin(prime)[2:])} in base 10")
+
+                else:
+
+                    print(f"{prime} is not a prime number. Try again.")
+
+        else:
+            print("Try again.")
 
 assert convert_to_base_ten(2, 10) == 2
 assert convert_to_base_ten(2, 101011) == 43
@@ -99,5 +157,7 @@ while True:
     maximum = input("Please enter a max nummber:\n> ")
 
     show_everything(maximum)
+
+    
 
     
